@@ -6,4 +6,5 @@ fi
 
 aws iam create-role --role-name $1 --assume-role-policy-document file://role-policy.json
 
+aws iam attach-role-policy --role-name $1 --policy-arn arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
 
