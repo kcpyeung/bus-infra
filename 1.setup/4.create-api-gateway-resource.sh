@@ -8,8 +8,8 @@ fi
 root_resource_id=$(aws apigateway get-resources \
   --region ap-southeast-1 \
   --rest-api-id $1 \
-  | grep id \
-  | cut -d\" -f4)
+  --query 'items[0].id' \
+  | cut -d\" -f2)
 echo root_resource_id=$root_resource_id
 
 aws apigateway create-resource --rest-api-id $1 --parent-id $root_resource_id --path-part $2
