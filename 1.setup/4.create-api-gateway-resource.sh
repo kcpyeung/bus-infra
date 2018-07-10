@@ -61,7 +61,7 @@ aws lambda add-permission \
   --statement-id apigateway-perm-$1-$3 \
   --action lambda:InvokeFunction \
   --principal apigateway.amazonaws.com \
-  --source-arn arn:aws:execute-api:ap-southeast-1:$account_id:$1/*/GET/schedules
+  --source-arn arn:aws:execute-api:ap-southeast-1:$account_id:$1/*/GET/$2
 
 deployment_id=$(aws apigateway create-deployment \
   --region ap-southeast-1 \
