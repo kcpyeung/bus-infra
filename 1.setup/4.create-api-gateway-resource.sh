@@ -1,9 +1,16 @@
-if [ "$#" -ne 2 ]; then
-  echo "requires 2 arguments: api_id path"
-  echo "e.g., hlgz6pa9b2 schedules"
+if [ "$#" -ne 3 ]; then
+  echo "requires 3 arguments: api_id path lambda_function_name"
+  echo "e.g., hlgz6pa9b2 schedules bus"
   echo "to get api_id, run aws apigateway get-rest-apis"
   exit 2
 fi
+
+account_id=$AWS_ACCOUNT_ID
+if [ "$account_id" == "" ]; then
+  echo "please set your aws account id in \$AWS_ACCOUNT_ID"
+  exit 3
+fi
+echo "using account id $account_id"
 
 root_resource_id=$(aws apigateway get-resources \
   --region ap-southeast-1 \
@@ -36,8 +43,10 @@ aws apigateway put-integration \
   --rest-api-id $1 \
   --resource-id $path_resource_id \
   --http-method GET \
-  --type MOCK \
-  --request-templates '{"application/json":"{\"statusCode\": 200}"}'
+  --type AWS \
+  --integration-http-method POST \
+  --uri arn:aws:apigateway:ap-southeast-1:lambda:path//2015-03-31/functions/arn:aws:lambda:ap-southeast-1:$account_id:function:$3/invocations \
+  --request-templates '{"application/json":"{\"id\": \"hello\"}"}'
 
 aws apigateway put-integration-response \
   --region ap-southeast-1 \
@@ -45,7 +54,14 @@ aws apigateway put-integration-response \
   --resource-id $path_resource_id \
   --http-method GET \
   --status-code 200 \
-  --response-templates '{"application/json":"{\"name\": \"Smelly Cat\"}"}'
+  --selection-pattern ""
+
+aws lambda add-permission \
+  --function-name $3 \
+  --statement-id apigateway-perm-$1-$3 \
+  --action lambda:InvokeFunction \
+  --principal apigateway.amazonaws.com \
+  --source-arn arn:aws:execute-api:ap-southeast-1:$account_id:$1/*/GET/schedules
 
 deployment_id=$(aws apigateway create-deployment \
   --region ap-southeast-1 \
