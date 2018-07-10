@@ -45,7 +45,7 @@ aws apigateway put-integration-response \
   --resource-id $path_resource_id \
   --http-method GET \
   --status-code 200 \
-  --response-templates '{"application/json":"ok"}'
+  --response-templates '{"application/json":"{\"name\": \"Smelly Cat\"}"}'
 
 deployment_id=$(aws apigateway create-deployment \
   --region ap-southeast-1 \
