@@ -58,7 +58,7 @@ aws apigateway put-integration-response \
 
 aws lambda add-permission \
   --function-name $3 \
-  --statement-id apigateway-perm-$1-$3 \
+  --statement-id apigateway-perm-$1-$2-$3 \
   --action lambda:InvokeFunction \
   --principal apigateway.amazonaws.com \
   --source-arn arn:aws:execute-api:ap-southeast-1:$account_id:$1/*/GET/$2
