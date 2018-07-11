@@ -29,7 +29,7 @@ aws apigateway put-method \
   --http-method GET \
   --authorization-type NONE \
   --no-api-key-required \
-  --request-parameters '{}'
+  --request-parameters method.request.querystring.smelly=false
 
 aws apigateway put-method-response \
   --region ap-southeast-1 \
@@ -46,7 +46,7 @@ aws apigateway put-integration \
   --type AWS \
   --integration-http-method POST \
   --uri arn:aws:apigateway:ap-southeast-1:lambda:path//2015-03-31/functions/arn:aws:lambda:ap-southeast-1:$account_id:function:$3/invocations \
-  --request-templates '{"application/json":"{\"id\": \"hello\"}"}'
+  --request-templates '{"application/json":"{\"smelly\": \"$input.params('"'"smelly"'"')\"}"}'
 
 aws apigateway put-integration-response \
   --region ap-southeast-1 \
