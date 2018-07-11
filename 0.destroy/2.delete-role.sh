@@ -5,6 +5,7 @@ if [ "$#" -ne 1 ]; then
 fi
 
 aws iam detach-role-policy --role-name $1 --policy-arn arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+aws iam detach-role-policy --role-name $1 --policy-arn arn:aws:iam::aws:policy/AWSLambdaFullAccess
 aws iam delete-role --role-name $1
 
 
