@@ -29,7 +29,7 @@ aws apigateway put-method \
   --http-method GET \
   --authorization-type NONE \
   --no-api-key-required \
-  --request-parameters method.request.querystring.busStopCode=false
+  --request-parameters method.request.querystring.serviceNumber=false
 
 aws apigateway put-method-response \
   --region ap-southeast-1 \
@@ -46,7 +46,7 @@ aws apigateway put-integration \
   --type AWS \
   --integration-http-method POST \
   --uri arn:aws:apigateway:ap-southeast-1:lambda:path//2015-03-31/functions/arn:aws:lambda:ap-southeast-1:$account_id:function:$3/invocations \
-  --request-templates '{"application/json":"{\"busStopCode\": \"$input.params('"'"busStopCode"'"')\"}"}'
+  --request-templates '{"application/json":"{\"serviceNumber\": \"$input.params('"'"serviceNumber"'"')\"}"}'
 
 aws apigateway put-integration-response \
   --region ap-southeast-1 \
